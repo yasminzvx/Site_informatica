@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cantina do Sabor — Integrado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+  <style>
+    /* ---------- Geral (mantido dos códigos originais) ---------- */
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0
+    }
+
+
+
+
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      background:#fff;
+      color:#333;
+      line-height:1.35;
+ 
+    }
+
+
+
+
+    img{
+      display:block;
+      margin-left: auto;
+      margin-right: auto;
+     
+     
+    }
+
+
+
+
+    /* Painel do carrinho com transição suave */
+
+
+
+
+#painelCarrinho {
+  position: fixed;
+  top: 0;
+  right: -400px; /* fora da tela inicialmente */
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transition: right 0.5s ease; /* animação suave */
+  overflow-y: auto; /* rolagem vertical */
+  scrollbar-width: thin; /* rolagem mais fina */
+  z-index: 999;
+}
+
+
+
+
+/* Quando estiver visível */
+#painelCarrinho.mostrar {
+  right: 0; /* desliza pra dentro */
+}
+
+
+
+
+/* Suaviza a rolagem dentro do painel */
+#painelCarrinho {
+  scroll-behavior: smooth;
+}
+
+
+
+
+/* Mensagem animada */
+#mensagem {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #00b894;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.4s ease, top 0.4s ease;
+  z-index: 1000;
+}
+
+
+
+
+#mensagem.mostrar {
+  opacity: 1;
+  top: 40px;
+}
+
+
+
+
+    /* ---------- Cabeçalho (preservado) ---------- */
+    header.site-header{
+      background:#ffffff;
+      border-bottom:1px solid #ddd;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      position:relative;
+    }
+
+
+
+
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+
+
+
+    .logo{
+      font-weight:bold;
+      font-size:30px;
+      color:#a84611;
+      cursor:pointer;
+      font-family:Cambria,Georgia,serif;
+      display:flex;
+      align-items:center;
+      gap:12px
+    }
+
+
+
+
+    .logo img{
+      max-height:80px
+    }
+
+
+
+
+    .search-bar{
+      flex:1;
+      margin:0 20px
+    }
+
+
+
+
+    .search-bar input{
+      width:100%;
+      padding:8px 12px;
+      font-size:16px;
+      border:1px solid #ccc;
+      border-radius:4px
+    }
+
+
+
+
+    .icons{
+      display:flex;
+      gap:15px;
+      align-items:center;
+      color:#555;
+      font-size:14px
+    }
+
+
+
+
+    .icon{
+      cursor:pointer;
+      position:relative
+    }
+
+
+
+
+    #contador-carrinho{
+      background:#ff7f00;
+      color:#fff;
+      font-weight:bold;
+      border-radius:50%;
+      padding:3px 7px;
+      font-size:12px;
+      position:absolute;
+      top:-6px;
+      right:-10px
+    }
+
+
+
+
+    /* ---------- Navegação / Abas (integradas) ---------- */
+    nav.main-nav{
+      background:#f7f7f7;
+      padding:10px 18px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      border-radius:8px;
+      margin:12px 18px
+    }
+
+
+
+
+    nav.main-nav button{
+      background:#ff7f00;
+      color:#fff;
+      border:none;
+      padding:8px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:700
+    }
+
+
+
+
+    nav.main-nav button[aria-current="true"]{
+        background:#994d26
+      }
+
+
+
+
+    /* ---------- Ofertas / Secoes ---------- */
+    .offers{
+      background:#ffeaea;
+      margin:18px;
+      border-radius:10px;
+      padding:18px;
+      text-align:center;
+      font-size:20px;
+      color:#994d26;
+      font-weight:700
+    }
+
+
+
+
+    .container{
+      max-width:1100px;
+      margin:18px auto;
+      padding:0 16px
+    }
+
+
+
+
+    /* ---------- Promoções (cards) ---------- */
+      #promocoes {
+        padding: 40px 20px;
+        background-color: #f9f9f9;
+        text-align: center;
+        margin: 20px;
+        border-radius: 8px;
+      }
+
+
+
+
+      .produto-promocao {
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px;
+        max-width: 300px;
+        display: inline-block;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+        vertical-align: top;
+        background: #fff;
+      }
+
+
+
+
+      .produto-promocao.destaque {
+        border-color: #994d26;
+        background-color: #fff0f0;
+        transform: scale(1.02);
+      }
+
+
+
+
+      .preco-antigo {
+        text-decoration: line-through;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .preco-novo {
+        color: #27ae60;
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+      .btn-comprar {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 14px;
+        background-color: #994d26;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background 0.2s;
+      }
+
+
+
+
+     .btn-comprar:hover {
+        background: #ff7f00;
+      }
+
+
+
+
+    /* ---------- Tab content (mantendo comportamento original) ---------- */
+    .tab-content{
+      display:none;
+      padding:16px;
+      border:2px solid #ff7f00;
+      border-radius:10px;
+      background:#fff;
+      margin-bottom:18px;
+      opacity:0;
+      transform:translateY(8px);
+      transition:all .35s
+    }
+
+
+
+
+    .tab-content.active{
+      display:block;
+      opacity:1;
+      transform:translateY(0)
+    }
+
+
+
+
+    /* ---------- Mini carrossel por aba (novo) ---------- */
+    .mini-carousel{
+      position:relative;
+      max-width:680px;
+      margin:0 auto 12px;
+      border-radius:8px;
+      overflow:hidden
+    }
+    .mini-carousel .slide{
+      display:none
+    }
+
+
+
+
+    .mini-carousel .slide.active{
+      display:block;
+      animation:fadeIn .5s
+    }
+
+
+
+
+    @keyframes fadeIn{
+      from{opacity:0}to{opacity:1}
+    }
+    .mini-carousel img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+      display:block
+    }
+    .mini-carousel .nav{
+      position:absolute;
+      top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      border:none;
+      padding:10px;
+      border-radius:50%;
+      cursor:pointer
+    }
+    .mini-carousel .prev{
+      left:12px
+    }
+    .mini-carousel .next{
+      right:12px
+    }
+
+
+
+
+    /* ---------- Grid de produtos (preservado estilo original com pequenas melhorias) ---------- */
+    .prod-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:12px;
+      margin-top:10px
+    }
+    .card-prod{
+      border:1px solid #eee;
+      border-radius:8px;
+      padding:10px;
+      background:#fff;
+      text-align:center;
+      box-shadow:0 1px 4px rgba(0,0,0,0.03)
+    }
+
+
+
+
+    .card-prod img{
+      height:110px;
+      object-fit:cover;
+      border-radius:6px
+    }
+
+
+
+
+    .nome{
+      font-weight:700;
+      margin:8px 0
+    }
+
+
+
+
+    .preco{
+      color:#c92d2b;
+      font-weight:800
+    }
+    .btn-buy{
+      display:inline-block;
+      margin-top:8px;
+      padding:8px 10px;
+      background:#994d26;
+      color:#fff;
+      text-decoration:none;
+      border-radius:6px;
+      border:none;
+      cursor:pointer
+    }
+
+
+
+
+    .btn-buy:hover{
+      background:#ff7f00
+    }
+
+
+
+
+    /* ---------- Carrossel horizontal grande (preservado) ---------- */
+    .carrossel-container{
+      width:100%;
+      max-width:1100px;
+      margin:18px auto;
+      background:#fff;
+      border-radius:8px;
+      padding:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.04)
+    }
+
+
+
+
+    .carrossel{
+      position:relative;
+      overflow:hidden
+    }
+    .lista-produtos{
+      display:flex;
+      gap:16px;
+      transition:transform .45s ease
+    }
+    .produto{
+      background:#fafafa;
+      border:1px solid #ddd;
+      border-radius:8px;
+      width:220px;
+      flex-shrink:0;
+      padding:10px;
+      text-align:center
+    }
+
+
+
+
+    .produto img{
+      height:130px;
+      object-fit:cover;
+      border-radius:6px
+    }
+
+
+
+
+    .nome-produto{
+      font-weight:600;
+      margin:10px 0}
+
+
+
+
+    .preco{
+      font-weight:bold;
+      color:#c92d2b}
+
+
+
+
+    .btn-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.25);
+      border:none;
+      color:#f8f5f5;
+      font-size:20px;
+      width:38px;
+      height:56px;
+      cursor:pointer;
+      border-radius:6px}
+
+
+
+
+    .btn-esquerda{
+      left:6px}
+
+
+
+
+    .btn-direita{
+      right:6px}
+
+
+
+
+    /* ---------- Cardápio e Nutri (mantidos) ---------- */
+    .container-cardapio{max-width:900px;margin:18px auto;border:2px solid #ff7f00;padding:18px;background:#fff;border-radius:8px;position:relative}
+    .title-bg{position:absolute;left:20px;top:18px;width:180px;height:60px;background:#ff7f00;transform:rotate(-10deg);z-index:-1;border-radius:10px 50px}
+    h1.cardapio-title{font-family:'Pacifico',cursive;font-size:44px;color:#000;margin-bottom:8px}
+    .section{margin-top:20px}
+    .section h2{font-weight:700;font-size:20px;border-bottom:2px solid #ff7f00;padding-bottom:6px;margin-bottom:10px}
+    ul.menu-list{list-style:none}
+    ul.menu-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1ece8}
+
+
+
+
+    .nutri{max-width:900px;margin:30px auto;padding:0 20px 20px}
+    table.nutri-table{width:100%;border-collapse:collapse;margin-top:10px}
+    table.nutri-table th,table.nutri-table td{border:1px solid #f1e1d4;padding:8px;text-align:left}
+    table.nutri-table th{color:#c5562e;background:#fffaf6}
+    tr:nth-child(even){background:rgb(241,225,207)}
+
+
+
+
+    /* ---------- Parcerias (preservado) ---------- */
+    .parcerias{max-width:900px;margin:30px auto;position:relative}
+    .parcerias .carrossel-simples{position:relative;overflow:hidden;border-radius:8px}
+    .parcerias .slides{display:flex;transition:transform .5s ease-in-out}
+    .parcerias .slides img{width:100%;height:250px;object-fit:cover;flex-shrink:0}
+    .parcerias .btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;font-size:24px;width:35px;height:60px;cursor:pointer}
+    .parcerias .prev{left:10px}.parcerias .next{right:10px}
+
+
+
+
+    /* ---------- Painel Carrinho (mantido) ---------- */
+    #painelCarrinho{position:fixed;right:18px;top:80px;width:300px;background:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.12);padding:12px;z-index:1200;display:none}
+    #painelCarrinho h3{margin-bottom:8px}#itensCarrinho{list-style:none;padding:0;margin:0;max-height:320px;overflow:auto}#itensCarrinho li{padding:6px 0;border-bottom:1px dashed #eee;display:flex;justify-content:space-between;align-items:center}.remove-item{background:transparent;border:none;color:#c92d2b;cursor:pointer;font-size:16px}#btnPedirAgora{width:100%;padding:10px;background:#ff7f00;color:#fff;border:none;border-radius:6px;cursor:pointer;margin-top:8px}
+
+
+
+
+    /* ---------- Mensagem animada ---------- */
+    #mensagem{position:fixed;top:18px;right:18px;background:#27ae60;color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.12);opacity:0;transform:translateY(-10px);transition:all .35s;z-index:1300}
+    #mensagem.mostrar{opacity:1;transform:translateY(0)}
+
+
+
+
+    /* ---------- Responsividade ---------- */
+    @media (max-width:900px){.produto{width:180px}.mini-carousel img{height:220px}.logo img{height:52px}.carrossel-container{padding:10px}}
+    @media (max-width:600px){header.site-header{flex-direction:column;align-items:stretch}.main-nav{overflow:auto}.carrossel-container{padding:8px}#painelCarrinho{right:8px;left:8px;width:auto}}
+  </style>
+</head>
+<body>
+  <!-- ========== HEADER (preservado) ========== -->
+  <header class="site-header">
+    <div class="header-left">
+      <div class="logo"><img src="Cantina.png" alt="Logo da Cantina"/><span>Cantina do sabor</span></div>
+      <div class="search-bar" aria-label="Busca"><input id="searchInput" type="text" placeholder="Buscar produtos..."></div>
+    </div>
+
+
+
+
+    <div class="icons">
+      <div class="icon" title="Favoritos">&#9733;</div>
+      <div class="icon" title="Carrinho">&#128722;<span id="contador-carrinho">0</span></div>
+      <div class="icon" id="userIcon" title="Usuário">Olá, Entre ou Cadastre-se</div>
+    </div>
+
+
+
+
+    <!-- Painel do carrinho (preservado) -->
+    <div id="painelCarrinho" aria-hidden="true">
+      <h3>Carrinho</h3>
+      <ul id="itensCarrinho"></ul>
+      <p style="margin-top:8px">Total: R$ <span id="totalCarrinho">0.00</span></p>
+      <button id="btnPedirAgora">Pedir Agora</button>
+    </div>
+  </header>
+
+
+
+
+  <!-- ========== NAV / ABAS (integradas) ========== -->
+  <nav class="main-nav" role="navigation" aria-label="Menu principal">
+    <button data-tab="ofertas" aria-current="true">Ofertas do dia</button>
+    <button data-tab="salgados">Salgados</button>
+    <button data-tab="doces">Doces</button>
+    <button data-tab="bebidas">Bebidas</button>
+  </nav>
+
+
+
+
+  <div class="container">
+    <section class="offers">OFERTAS IMPERDÍVEIS</section>
+
+
+
+
+    <!-- ========== Abas com carrossel vinculado ========== -->
+    <div id="ofertas" class="tab-content active" data-carousel="ofertas">
+      <h3>Ofertas do Dia</h3>
+      <div class="mini-carousel" data-index="0">
+        <div class="slide active"><img src="Promoção.png" alt="Oferta 1"></div>
+        <div class="slide"><img src="Oferta.png" alt="Oferta 2"></div>
+        <button class="nav prev" aria-label="anterior">&#10094;</button>
+        <button class="nav next" aria-label="próximo">&#10095;</button>
+      </div>
+
+
+
+
+      <div class="prod-grid">
+        <div class="card-prod"><img src="Coxinha.jpg" alt="Coxinha de Frango"><div class="nome">Coxinha de Frango</div><div class="preco">R$ 6,00</div><button class="btn-buy" data-nome="Coxinha de Frango" data-preco="6">Comprar</button></div>
+        <div class="card-prod"><img src="Brownie.png" alt="Brownie"><div class="nome">Brownie</div><div class="preco">R$ 6,00</div><button class="btn-buy" data-nome="Brownie" data-preco="6">Comprar</button></div>
+        <div class="card-prod"><img src="Picole.png" alt="Picolé"><div class="nome">Picolé</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Picolé" data-preco="4">Comprar</button></div>
+      </div>
+    </div>
+
+
+
+
+    <div id="salgados" class="tab-content" data-carousel="salgados">
+      <h3>Salgados</h3>
+      <div class="mini-carousel" data-index="0">
+        <div class="slide active"><img src="Salga.png" alt="Salgado 1"></div>
+        <div class="slide"><img src="Salgados.png" alt="Salgado 2"></div>
+        <button class="nav prev" aria-label="anterior">&#10094;</button>
+        <button class="nav next" aria-label="próximo">&#10095;</button>
+      </div>
+
+      <div class="prod-grid">
+        <div class="card-prod"><img src="Coxinha.jpg" alt><div class="nome">Coxinha</div><div class="preco">R$ 6,00</div><button class="btn-buy" data-nome="Coxinha" data-preco="6">Comprar</button></div>
+        <div class="card-prod"><img src="Esfirra.jpg" alt><div class="nome">Esfiha de Frango</div><div class="preco">R$ 5,50</div><button class="btn-buy" data-nome="Esfiha de Frango" data-preco="5.5">Comprar</button></div>
+        <div class="card-prod"><img src="Pastel.jpg" alt><div class="nome">Pastel</div><div class="preco">R$ 4,30</div><button class="btn-buy" data-nome="Pastel" data-preco="4.3">Comprar</button></div>
+      </div>
+    </div>
+
+    <div id="doces" class="tab-content" data-carousel="doces">
+      <h3>Doces</h3>
+      <div class="mini-carousel" data-index="0">
+        <div class="slide active"><img src="Doces.png" alt="Doce 1"></div>
+        <div class="slide"><img src="Açaí.png" alt="Doce 2"></div>
+        <button class="nav prev" aria-label="anterior">&#10094;</button>
+        <button class="nav next" aria-label="próximo">&#10095;</button>
+      </div>
+
+
+      <div class="prod-grid">
+        <div class="card-prod"><img src="Bolacha.jpg" alt><div class="nome">Bolacha Recheada</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Bolacha Recheada" data-preco="4">Comprar</button></div>
+        <div class="card-prod"><img src="Chocolate.png" alt><div class="nome">Chocolate</div><div class="preco">R$ 5,00</div><button class="btn-buy" data-nome="Chocolate" data-preco="5">Comprar</button></div>
+        <div class="card-prod"><img src="Mentos.jpg" alt><div class="nome">Mentos</div><div class="preco">R$ 2.99</div><button class="btn-buy" data-nome="Mentos" data-preco="2.99">Comprar</button></div>
+      </div>
+    </div>
+
+
+    <div id="bebidas" class="tab-content" data-carousel="bebidas">
+      <h3>Bebidas</h3>
+      <div class="mini-carousel" data-index="0">
+        <div class="slide active"><img src="Bebi.png" alt="Bebida 1"></div>
+        <div class="slide"><img src="Bebida.png" alt="Bebida 2"></div>
+        <button class="nav prev" aria-label="anterior">&#10094;</button>
+        <button class="nav next" aria-label="próximo">&#10095;</button>
+      </div>
+
+
+      <div class="prod-grid">
+        <div class="card-prod"><img src="Coca-cola.png" alt><div class="nome">Coca-cola</div><div class="preco">R$ 3,00</div><button class="btn-buy" data-nome="Coca-cola" data-preco="3">Comprar</button></div>
+        <div class="card-prod"><img src="Guarana.jpg" alt><div class="nome">Guaraná</div><div class="preco">R$ 4,50</div><button class="btn-buy" data-nome="Guaraná" data-preco="4.5">Comprar</button></div>
+        <div class="card-prod"><img src="Agua coco.png" alt><div class="nome">Água de coco</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Água de coco" data-preco="4">Comprar</button></div>
+      </div>
+    </div>
+
+
+    <!-- ========== PROMOÇÕES (mantido) ========== -->
+    <section id="promocoes">
+      <h2>Promoções de Comida da Semana!</h2>
+
+      <div class="produto-promocao">
+        <h3>Salgados em Dobro</h3>
+        <p>Compre 2 e leve o terceiro grátis.</p>
+        <p class="preco-antigo">De: R$ 12,00</p>
+        <p class="preco-novo">Por: R$ 6,00</p>
+         <a href="#" class="btn-comprar" data-nome="Salgados em Dobro" data-preco="6">Comprar</a>
+      </div>
+
+      <div class="produto-promocao destaque">
+        <h3>Combo do Dia</h3>
+        <p>Brownie + Picolé + Refrigerante por um preço fixo.</p>
+        <p class="preco-novo">Apenas R$ 11,00</p>
+         <a href="#" class="btn-comprar" data-nome="Combo do dia" data-preco="11">Comprar</a>
+      </div>
+    </section>
+
+    <!-- ========== CARROSSEL DE PRODUTOS (vários itens visíveis) ========== -->
+    <div class="carrossel-container" aria-label="Carrossel de produtos">
+      <div class="carrossel">
+        <button class="btn-nav btn-esquerda" id="btnEsq">&#10094;</button>
+
+
+        <div class="lista-produtos" id="listaProdutos">
+          <!-- Produto 1 -->
+          <div class="produto">
+            <img src="Bolacha.jpg" alt="Bolacha recheada" />
+            <div class="nome-produto">Bolacha recheada</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 4,00</div>
+          </div>
+
+          <!-- Produto 2 -->
+          <div class="produto">
+            <img src="Coxinha.jpg" alt="Coxinha" />
+            <div class="nome-produto">Coxinha</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 5,00</div>
+          </div>
+
+
+          <!-- Produto 3 -->
+          <div class="produto">
+            <img src="Brownie.png" alt="Brownie" />
+            <div class="nome-produto">Brownie</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 6,00</div>
+          </div>
+
+
+          <!-- Produto 4 -->
+          <div class="produto">
+            <img src="Chocolate.png" alt="Chocolate" />
+            <div class="nome-produto">Chocolate</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 5,00</div>
+          </div>
+
+
+          <!-- Produto 5 -->
+          <div class="produto">
+            <img src="Enroladinho.jpg" alt="Enroladinho de salsicha" />
+            <div class="nome-produto">Enroladinho de salsicha</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 5,00</div>
+          </div>
+
+
+          <!-- Produto 6 -->
+          <div class="produto">
+            <img src="Enroladinho.png" alt="Enroladinho de queijo e presunto" />
+            <div class="nome-produto">Enroladinho de queijo e presunto</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 5,00</div>
+          </div>
+
+          <!-- Produto 7 -->
+          <div class="produto">
+            <img src="Esfirra.jpg" alt="Esfirra de frango" />
+            <div class="nome-produto">Esfirra de frango</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 5,50</div>
+          </div>
+
+          <!-- Produto 8 -->
+          <div class="produto">
+            <img src="Pastel.jpg" alt="Pastel" />
+            <div class="nome-produto">Pastel</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 4,30</div>
+          </div>
+
+          <!-- Produto 9 -->
+          <div class="produto">
+            <img src="Pacoco.jpg" alt="Paçoca" />
+            <div class="nome-produto">Paçoca</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 1,00</div>
+          </div>
+
+
+
+          <!-- Produto 10 -->
+          <div class="produto">
+            <img src="Picole.png" alt="Picolé" />
+            <div class="nome-produto">Picolés</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 4,00</div>
+          </div>
+
+
+          <!-- Produto 11 -->
+          <div class="produto">
+            <img src="Picolé.png" alt="Picolé" />
+            <div class="nome-produto">Picolé</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 4,00</div>
+          </div>
+
+          <!-- Produto 12 -->
+          <div class="produto">
+            <img src="Sanduiche.jpg" alt="Sanduíche" />
+            <div class="nome-produto">Sanduíche</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 5,00</div>
+          </div>
+
+
+
+          <!-- Produto 13 -->
+          <div class="produto">
+            <img src="Snickers.jpg" alt="Barrinha" />
+            <div class="nome-produto">Barrinha</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 3,50</div>
+          </div>
+
+
+
+          <!-- Produto 14 -->
+          <div class="produto">
+            <img src="Agua coco.png" alt="Água de coco" />
+            <div class="nome-produto">Água de coco</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 4,00</div>
+          </div>
+
+
+          <!-- Produto 15 -->
+          <div class="produto">
+            <img src="Coca-cola.png" alt="Coca-cola" />
+            <div class="nome-produto">Coca-cola</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 3,00</div>
+          </div>
+
+
+          <!-- Produto 16 -->
+          <div class="produto">
+            <img src="Fanta laranja.png" alt="Fanta laranja" />
+            <div class="nome-produto">Fanta laranja</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 3,00</div>
+          </div>
+
+          <!-- Produto 17 -->
+          <div class="produto">
+            <img src="Guarana.jpg" alt="Guaraná" />
+            <div class="nome-produto">Guaraná</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 4,50</div>
+          </div>
+
+
+          <!-- Produto 18 -->
+          <div class="produto">
+            <img src="Pepsi.jpg" alt="Pepsi" />
+            <div class="nome-produto">Pepsi</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 3,00</div>
+          </div>
+
+
+          <!-- Produto 19 -->
+          <div class="produto">
+            <img src="Trident.png" alt="Trident" />
+            <div class="nome-produto">Trident</div>
+            <div class="avaliacao">★★★★☆</div>
+            <div class="preco">R$ 2,50</div>
+          </div>
+
+
+          <!-- Produto 20 -->
+          <div class="produto">
+            <img src="Mentos.jpg" alt="Mentos" />
+            <div class="nome-produto">Mentos</div>
+            <div class="avaliacao">★★★★★</div>
+            <div class="preco">R$ 2,99</div>
+          </div>
+        </div>
+
+
+        <button class="btn-nav btn-direita" id="btnDir">&#10095;</button>
+      </div>
+    </div>
+
+
+   <!-- ========== CARDÁPIO ========== -->
+    <main
+      class="container-cardapio"
+      role="main"
+      aria-labelledby="cardapio-title"
+    >
+      <div class="title-bg" aria-hidden="true"></div>
+      <h1 id="cardapio-title" class="cardapio-title">Cardápio</h1>
+
+      <div class="section">
+        <h2>Salgados</h2>
+        <ul class="menu-list">
+
+
+
+          <li>
+            <span>Coxinha</span>
+            <span class="price">R$ 6,00</span></li>
+          <li>
+            <span>Enroladinho de salsicha</span>
+            <span class="price">R$ 5,00</span>
+          </li>
+          <li><span>Pastel</span> <span class="price">R$ 4,30</span></li>
+          <li>
+            <span>Enroladinho de presunto e queijo</span>
+            <span class="price">R$ 5,00</span>
+          </li>
+          <li>
+            <span>Esfirra de frango</span> <span class="price">R$ 5,50</span>
+          </li>
+          <li><span>Misto Quente</span> <span class="price">R$ 4,00</span></li>
+          <li>
+            <span>Esfiha de Carne</span> <span class="price">R$ 5,50</span>
+          </li>
+          <li>
+            <span>Sanduíche Natural</span> <span class="price">R$ 5,00</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Bebidas</h2>
+        <ul class="menu-list">
+          <li><span>Coca-cola</span> <span class="price">R$ 3,00</span></li>
+          <li>
+            <span>Coca-cola sem açucar</span> <span class="price">R$ 4,00</span>
+          </li>
+          <li><span>Guaraná</span> <span class="price">R$ 4,50</span></li>
+          <li><span>Fanta Uva</span> <span class="price">R$ 4,50</span></li>
+          <li><span>Pepsi</span> <span class="price">R$ 3,00</span></li>
+          <li><span>Fanta laranja</span> <span class="price">R$ 3,00</span></li>
+          <li><span>Casulinha</span> <span class="price">R$ 3,00</span></li>
+          <li><span>Água de coco</span> <span class="price">R$ 4,00</span></li>
+          <li><span>Água com gás</span> <span class="price">R$ 3,50</span></li>
+          <li><span>Água</span> <span class="price">R$ 3,00</span></li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Picolés</h2>
+        <ul class="menu-list">
+          <li><span>Morango</span> <span class="price">R$ 4,00</span></li>
+          <li><span>Coco</span> <span class="price">R$ 4,00</span></li>
+          <li><span>Chocolate</span> <span class="price">R$ 4,00</span></li>
+          <li><span>Creme</span> <span class="price">R$ 4,00</span></li>
+          <li><span>Doce de leite</span> <span class="price">R$ 4,00</span></li>
+          <li><span>Flocos</span> <span class="price">R$ 4,00</span></li>
+          <li>
+            <span>Leite condensado</span> <span class="price">R$ 4,00</span>
+          </li>
+          <li><span>Amendoim</span> <span class="price">R$ 4,00</span></li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Guloseimas</h2>
+        <ul class="menu-list">
+          <li><span>Pirulito</span> <span class="price">R$ 1,00</span></li>
+          <li><span>Paçoca</span> <span class="price">R$ 1,00</span></li>
+          <li><span>Confeito</span> <span class="price">R$ 0,50</span></li>
+          <li><span>Brownie</span> <span class="price">R$ 6,00</span></li>
+          <li><span>Chocolates</span> <span class="price">R$ 5,00</span></li>
+          <li>
+            <span>Bolachas recheadas</span> <span class="price">R$ 6,00</span>
+          </li>
+          <li>
+            <span>Barra de cereal</span> <span class="price">R$ 3,50</span>
+          </li>
+          <li><span>Pipoca</span> <span class="price">R$ 6,00</span></li>
+          <li><span>Pastilhas</span> <span class="price">R$ 2,00</span></li>
+          <li><span>Chicletes</span> <span class="price">R$ 0,29</span></li>
+          <li><span>Mentos</span> <span class="price">R$ 2,99</span></li>
+          <li><span>Trident</span> <span class="price">R$ 2,50</span></li>
+        </ul>
+      </div>
+
+      <div class="footer">
+        <span
+          >Cantina do sabor | Entre em contato: (84) 99948-8618 |
+          Email@exemplo.com</span
+        >
+      </div>
+    </main>
+
+     <!-- ========== TABELA NUTRICIONAL ========== -->
+    <section class="nutri" aria-labelledby="nutri-title">
+      <h2
+        id="nutri-title"
+        style="
+          color: #c5562e;
+          font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        "
+      >
+        Nutricional
+      </h2>
+      <table class="nutri-table" aria-describedby="nutri-title">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Categoria</th>
+            <th>Calorias (kcal)</th>
+            <th>Proteínas (g)</th>
+            <th>Carboidratos (g)</th>
+            <th>Gorduras (g)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Salgados -->
+          <tr>
+            <td>Coxinha</td>
+            <td>Salgado</td>
+            <td>250</td>
+            <td>10</td>
+            <td>20</td>
+            <td>15</td>
+          </tr>
+          <tr>
+            <td>Esfiha de frango</td>
+            <td>Salgado</td>
+            <td>200</td>
+            <td>12</td>
+            <td>22</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>Esfiha de carne</td>
+            <td>Salgado</td>
+            <td>220</td>
+            <td>13</td>
+            <td>20</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>Enroladinho de salsicha</td>
+            <td>Salgado</td>
+            <td>230</td>
+            <td>9</td>
+            <td>25</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td>Enroladinho de presunto e queijo</td>
+            <td>Salgado</td>
+            <td>260</td>
+            <td>11</td>
+            <td>24</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td>Misto quente</td>
+            <td>Salgado</td>
+            <td>300</td>
+            <td>15</td>
+            <td>26</td>
+            <td>18</td>
+          </tr>
+          <tr>
+            <td>Pastel</td>
+            <td>Salgado</td>
+            <td>350</td>
+            <td>8</td>
+            <td>30</td>
+            <td>22</td>
+          </tr>
+          <tr>
+            <td>Sanduíches naturais</td>
+            <td>Salgado</td>
+            <td>180</td>
+            <td>12</td>
+            <td>20</td>
+            <td>6</td>
+          </tr>
+
+
+          <!-- Bebidas -->
+          <tr>
+            <td>Coca-cola</td>
+            <td>Bebida</td>
+            <td>140</td>
+            <td>0</td>
+            <td>39</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Coca-cola sem açúcar</td>
+            <td>Bebida</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Guaraná</td>
+            <td>Bebida</td>
+            <td>145</td>
+            <td>0</td>
+            <td>38</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Fanta uva</td>
+            <td>Bebida</td>
+            <td>160</td>
+            <td>0</td>
+            <td>43</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Pepsi</td>
+            <td>Bebida</td>
+            <td>150</td>
+            <td>0</td>
+            <td>41</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Fanta laranja</td>
+            <td>Bebida</td>
+            <td>160</td>
+            <td>0</td>
+            <td>42</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Casulinha</td>
+            <td>Bebida</td>
+            <td>120</td>
+            <td>0</td>
+            <td>31</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Água</td>
+            <td>Bebida</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== PARCERIAS (preservado) ========== -->
+    <section class="parcerias" aria-label="Parcerias">
+      <div class="carrossel-simples">
+        <div class="slides" id="slidesParcerias">
+          <img src="Slup.png" alt="Slup" />
+          <img src="Atacadão.png" alt="Atacadão" />
+          <img src="Utimix .png" alt="Utimix" />
+          <img src="Limpa_mil.png" alt="Limpa Mil" />
+          <img src="Massas&cia.png" alt="Massas & Cia" />
+        </div>
+        <button class="btn prev" id="prevPar">&#10094;</button>
+        <button class="btn next" id="nextPar">&#10095;</button>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- Mensagem animada -->
+  <div id="mensagem" aria-live="polite"></div>
+
+  <!-- ========== SCRIPTS (integração) ========== -->
+  <script>
+    // ---------- Estado do carrinho (integrado, mantém comportamento) ----------
+    let carrinho = [];
+    const contador = document.getElementById('contador-carrinho');
+    const painelCarrinho = document.getElementById('painelCarrinho');
+    const itensCarrinho = document.getElementById('itensCarrinho');
+    const totalCarrinho = document.getElementById('totalCarrinho');
+    const mensagemEl = document.getElementById('mensagem');
+
+
+    function atualizarContador(){ contador.textContent = carrinho.length }
+    function atualizarPainel(){
+      itensCarrinho.innerHTML = '';
+      let total = 0;
+      carrinho.forEach((it, idx)=>{
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${it.nome} - R$ ${Number(it.preco).toFixed(2)}</span><button class="remove-item" data-idx="${idx}">✖</button>`;
+        itensCarrinho.appendChild(li);
+        total += Number(it.preco);
+      });
+      totalCarrinho.textContent = total.toFixed(2);
+    }
+    function mostrarMensagem(texto){ mensagemEl.textContent = texto; mensagemEl.classList.add('mostrar'); setTimeout(()=>mensagemEl.classList.remove('mostrar'),2000) }
+
+    // Adicionar itens (mantém botões .btn-comprar e .btn-buy)
+    function adicionarCarrinho(nome, preco){ carrinho.push({nome, preco}); atualizarContador(); atualizarPainel(); mostrarMensagem(nome + ' adicionado ao carrinho!') }
+
+    document.addEventListener('click', function(e){
+      const b = e.target.closest('.btn-buy, .btn-comprar');
+      if(b){ e.preventDefault(); const nome = b.dataset.nome; const preco = b.dataset.preco; adicionarCarrinho(nome, preco); return }
+
+      const rem = e.target.closest('.remove-item');
+      if(rem){ const idx = Number(rem.dataset.idx); if(!isNaN(idx)){ carrinho.splice(idx,1); atualizarContador(); atualizarPainel(); } return }
+    });
+
+     document.getElementById('btnPedirAgora').addEventListener('click', () => {
+     if (carrinho.length === 0) {
+       mostrarMensagem('Seu carrinho está vazio!');
+       return;
+    }
+
+     // Exibe notificação no topo
+      mostrarMensagem('Compra finalizada! Total: R$ ' + Number(totalCarrinho.textContent).toFixed(2));
+
+     // Limpa carrinho e atualiza painel
+    carrinho = [];
+      atualizarContador();
+      atualizarPainel();
+    painelCarrinho.style.display = 'none';
+    });
+
+    // Toggle painel carrinho (preservado)
+    document.querySelector('.icons .icon[title="Carrinho"]').addEventListener('click', ()=>{
+      painelCarrinho.style.display = painelCarrinho.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // ---------- Abas e vinculação ao carrossel (nova integração) ----------
+    const tabButtons = document.querySelectorAll('nav.main-nav button');
+    const tabs = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        tabButtons.forEach(b=>b.removeAttribute('aria-current'));
+        btn.setAttribute('aria-current','true');
+        const tabId = btn.dataset.tab;
+        tabs.forEach(t=>t.classList.remove('active'));
+        const activeTab = document.getElementById(tabId);
+        if(activeTab) activeTab.classList.add('active');
+        // vincula ao carrossel: reinicia o mini-carrossel da aba
+        const mini = activeTab.querySelector('.mini-carousel');
+        if(mini){ mini.dispatchEvent(new CustomEvent('carousel-show')) }
+        window.scrollTo({top:120,behavior:'smooth'});
+      });
+    });
+
+
+    // ---------- Mini carrossel por aba (passagem automática + manual + fade) ----------
+    document.querySelectorAll('.mini-carousel').forEach(car=>{
+      const slides = Array.from(car.querySelectorAll('.slide'));
+      const prev = car.querySelector('.prev');
+      const next = car.querySelector('.next');
+      let idx = 0; let timer = null;
+
+      function mostrar(){ slides.forEach((s,i)=>s.classList.toggle('active', i===idx)); }
+      function nextSlide(){ idx = (idx+1)%slides.length; mostrar(); }
+      function prevSlide(){ idx = (idx-1+slides.length)%slides.length;
+         mostrar(); }
+
+      prev.addEventListener('click', ()=>{ prevSlide(); resetTimer(); });
+      next.addEventListener('click', ()=>{ nextSlide(); resetTimer(); });
+
+      function startTimer(){ timer = setInterval(nextSlide,5000); }
+      function resetTimer(){ clearInterval(timer);
+        startTimer(); }
+
+      // start auto
+      startTimer();
+
+
+      // expose manual trigger when tab becomes active
+      car.addEventListener('carousel-show', ()=>{ idx = 0; mostrar(); resetTimer(); });
+    });
+
+
+    // ---------- Carrossel horizontal grande (preservado comportamento) ----------
+    (function(){
+      const btnEsq = document.getElementById('btnEsq');
+      const btnDir = document.getElementById('btnDir');
+      const lista = document.getElementById('listaProdutos');
+      if(!btnEsq || !btnDir || !lista) return;
+      let pos = 0;
+       const largura = 240;
+      function itensVisiveis(){ return Math.floor((document.querySelector('.carrossel').offsetWidth)/220) || 4 }
+      function maxShift(){ return largura * (lista.children.length - itensVisiveis()); }
+      btnDir.addEventListener('click', ()=>{ const max = maxShift();
+         if(pos > -max){ pos -= largura;
+        lista.style.transform = `translateX(${pos}px)`;
+       } else { pos = 0;
+        lista.style.transform = `translateX(0)`; } });
+      btnEsq.addEventListener('click', ()=>{ if(pos < 0){ pos += largura;
+        lista.style.transform = `translateX(${pos}px)`; } });
+      setInterval(()=>{ const max = maxShift(); if(pos > -max){ pos -= largura; lista.style.transform = `translateX(${pos}px)`;
+       } else { pos = 0;
+        lista.style.transform = `translateX(0)`; } },6000);
+      window.addEventListener('resize', ()=>{ pos = 0;
+        lista.style.transform = 'translateX(0)'; });
+    })();
+
+
+    // ---------- Carrossel de parcerias (preservado) ----------
+    (function(){
+      const slides = document.getElementById('slidesParcerias');
+      if(!slides) return;
+      const imagens = slides.querySelectorAll('img');
+      const prevBtn = document.getElementById('prevPar');
+      const nextBtn = document.getElementById('nextPar');
+      let indice = 0;
+      const totalSlides = imagens.length;
+      function limitarIndice(){ if(indice >= totalSlides) indice = 0;
+        if(indice < 0) indice = totalSlides - 1; }
+      function atualizarSlide(){ limitarIndice();
+       slides.style.transform = `translateX(${-indice * 100}%)`; }
+      nextBtn.addEventListener('click', ()=>{ indice++; atualizarSlide(); });
+      prevBtn.addEventListener('click', ()=>{ indice--;
+        atualizarSlide(); });
+      setInterval(()=>{ indice++;
+        atualizarSlide();
+      },5000);
+    })();
+   
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
