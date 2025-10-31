@@ -42,6 +42,67 @@
       width: 100%;
 }
 
+    .tabela-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  margin: 0 auto 20px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 🔹 Tabela bonita e legível */
+.tabela-nutricional {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 400px; /* impede que aperte demais no celular */
+}
+
+.tabela-nutricional th,
+.tabela-nutricional td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.tabela-nutricional th {
+  background: #f3d7b9;
+  color: #333;
+}
+
+.tabela-nutricional tr:nth-child(even) {
+  background: #fdf5ec;
+}
+
+.tabela-nutricional tr:hover {
+  background: #fff4e3;
+}
+
+/* 🔹 Responsividade */
+@media (max-width: 600px) {
+  .tabela-container {
+    margin: 10px;
+  }
+
+  .tabela-nutricional {
+    min-width: 360px;
+  }
+
+  .tabela-nutricional th,
+  .tabela-nutricional td {
+    padding: 8px;
+  }
+}
+
+.tabela-container::-webkit-scrollbar{
+  height: 6px;
+}
+.tabela-container::-webkit-scrollbar-thumb{
+  background-color: #ff7b00;
+  border-radius: 10px;
+}
 
 /* Mensagem animada */
 #mensagem {
