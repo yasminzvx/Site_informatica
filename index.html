@@ -558,6 +558,7 @@
       <div class="prod-grid">
         <div class="card-prod"><img src="Coxinha.jpg" alt="Coxinha de Frango"><div class="nome">Coxinha de Frango</div><div class="preco">R$ 6,00</div><button class="btn-buy" data-nome="Coxinha de Frango" data-preco="6">Comprar</button></div>
         <div class="card-prod"><img src="Brownie.png" alt="Brownie"><div class="nome">Brownie</div><div class="preco">R$ 6,00</div><button class="btn-buy" data-nome="Brownie" data-preco="6">Comprar</button></div>
+        <div class="card-prod"><img src="Coca-cola.png" alt="Brownie"><div class="nome">Coca-cola</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Brownie" data-preco="6">Comprar</button></div>
         <div class="card-prod"><img src="Picole.png" alt="Picolé"><div class="nome">Picolé</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Picolé" data-preco="4">Comprar</button></div>
       </div>
     </div>
@@ -573,6 +574,7 @@
 
       <div class="prod-grid">
         <div class="card-prod"><img src="Coxinha.jpg" alt><div class="nome">Coxinha</div><div class="preco">R$ 6,00</div><button class="btn-buy" data-nome="Coxinha" data-preco="6">Comprar</button></div>
+        <div class="card-prod"><img src="Enroladinho.jpg" alt="Enroladinho"><div class="nome">Enroladinho</div><div class="preco">R$ 5,00</div><button class="btn-buy" data-nome="Brownie" data-preco="6">Comprar</button></div>
         <div class="card-prod"><img src="Esfirra.jpg" alt><div class="nome">Esfiha de Frango</div><div class="preco">R$ 5,50</div><button class="btn-buy" data-nome="Esfiha de Frango" data-preco="5.5">Comprar</button></div>
         <div class="card-prod"><img src="Pastel.jpg" alt><div class="nome">Pastel</div><div class="preco">R$ 4,30</div><button class="btn-buy" data-nome="Pastel" data-preco="4.3">Comprar</button></div>
       </div>
@@ -588,6 +590,7 @@
       </div>
 
       <div class="prod-grid">
+         <div class="card-prod"><img src="Pacoco.jpg" alt="Brownie"><div class="nome">Paçoca</div><div class="preco">R$ 1,00</div><button class="btn-buy" data-nome="Brownie" data-preco="6">Comprar</button></div>
         <div class="card-prod"><img src="Bolacha.jpg" alt><div class="nome">Bolacha Recheada</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Bolacha Recheada" data-preco="4">Comprar</button></div>
         <div class="card-prod"><img src="Chocolate.png" alt><div class="nome">Chocolate</div><div class="preco">R$ 5,00</div><button class="btn-buy" data-nome="Chocolate" data-preco="5">Comprar</button></div>
         <div class="card-prod"><img src="Mentos.jpg" alt><div class="nome">Mentos</div><div class="preco">R$ 2.99</div><button class="btn-buy" data-nome="Mentos" data-preco="2.99">Comprar</button></div>
@@ -612,219 +615,218 @@
 
     <!-- ========== PROMOÇÕES (mantido) ========== -->
     <section id="promocoes">
-      <h2>Promoções de Comida da Semana!</h2>
+  <h2>Promoções de Comida da Semana!</h2>
 
-      <div class="produto-promocao">
-        <h3>Salgados em Dobro</h3>
-        <p>Compre 2 e leve o terceiro grátis.</p>
-        <p class="preco-antigo">De: R$ 12,00</p>
-        <p class="preco-novo">Por: R$ 6,00</p>
-         <a href="#" class="btn-comprar" data-nome="Salgados em Dobro" data-preco="6">Comprar</a>
+  <div class="produto-promocao">
+    <h3>Salgados em Dobro</h3>
+    <p>Compre 2 e leve o terceiro grátis.</p>
+    <p class="preco-antigo">De: R$ 12,00</p>
+    <p class="preco-novo">Por: R$ 6,00</p>
+    <a href="#" class="btn-comprar" data-nome="Salgados em Dobro" data-preco="6">Comprar</a>
+  </div>
+
+  <div class="produto-promocao destaque">
+    <h3>Combo do Dia</h3>
+    <p>Brownie + Picolé + Refrigerante por um preço fixo.</p>
+    <p class="preco-novo">Apenas R$ 11,00</p>
+    <a href="#" class="btn-comprar" data-nome="Combo do Dia" data-preco="11">Comprar</a>
+  </div>
+</section>
+
+<!-- ========== CARROSSEL DE PRODUTOS ========== -->
+<div class="carrossel-container" aria-label="Carrossel de produtos">
+  <div class="carrossel">
+    <button class="btn-nav btn-esquerda" id="btnEsq">&#10094;</button>
+
+    <div class="lista-produtos" id="listaProdutos">
+
+      <!-- Produto 1 -->
+      <div class="produto">
+        <img src="Bolacha.jpg" alt="Bolacha recheada" />
+        <div class="nome-produto">Bolacha recheada</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 4,00</div>
+        <a href="#" class="btn-comprar" data-nome="Bolacha recheada" data-preco="4">Comprar</a>
       </div>
 
-      <div class="produto-promocao destaque">
-        <h3>Combo do Dia</h3>
-        <p>Brownie + Picolé + Refrigerante por um preço fixo.</p>
-        <p class="preco-novo">Apenas R$ 11,00</p>
-         <a href="#" class="btn-comprar" data-nome="Combo do dia" data-preco="11">Comprar</a>
+      <!-- Produto 2 -->
+      <div class="produto">
+        <img src="Coxinha.jpg" alt="Coxinha" />
+        <div class="nome-produto">Coxinha</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 5,00</div>
+        <a href="#" class="btn-comprar" data-nome="Coxinha" data-preco="5">Comprar</a>
       </div>
-    </section>
 
-    <!-- ========== CARROSSEL DE PRODUTOS (vários itens visíveis) ========== -->
-    <div class="carrossel-container" aria-label="Carrossel de produtos">
-      <div class="carrossel">
-        <button class="btn-nav btn-esquerda" id="btnEsq">&#10094;</button>
-
-
-        <div class="lista-produtos" id="listaProdutos">
-          <!-- Produto 1 -->
-          <div class="produto">
-            <img src="Bolacha.jpg" alt="Bolacha recheada" />
-            <div class="nome-produto">Bolacha recheada</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 4,00</div>
-          </div>
-
-
-          <!-- Produto 2 -->
-          <div class="produto">
-            <img src="Coxinha.jpg" alt="Coxinha" />
-            <div class="nome-produto">Coxinha</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 5,00</div>
-          </div>
-
-
-          <!-- Produto 3 -->
-          <div class="produto">
-            <img src="Brownie.png" alt="Brownie" />
-            <div class="nome-produto">Brownie</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 6,00</div>
-          </div>
-
-
-          <!-- Produto 4 -->
-          <div class="produto">
-            <img src="Chocolate.png" alt="Chocolate" />
-            <div class="nome-produto">Chocolate</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 5,00</div>
-          </div>
-
-
-          <!-- Produto 5 -->
-          <div class="produto">
-            <img src="Enroladinho.jpg" alt="Enroladinho de salsicha" />
-            <div class="nome-produto">Enroladinho de salsicha</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 5,00</div>
-          </div>
-
-
-          <!-- Produto 6 -->
-          <div class="produto">
-            <img src="Enroladinho.png" alt="Enroladinho de queijo e presunto" />
-            <div class="nome-produto">Enroladinho de queijo e presunto</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 5,00</div>
-          </div>
-
-
-          <!-- Produto 7 -->
-          <div class="produto">
-            <img src="Esfirra.jpg" alt="Esfirra de frango" />
-            <div class="nome-produto">Esfirra de frango</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 5,50</div>
-          </div>
-
-
-          <!-- Produto 8 -->
-          <div class="produto">
-            <img src="Pastel.jpg" alt="Pastel" />
-            <div class="nome-produto">Pastel</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 4,30</div>
-          </div>
-
-
-          <!-- Produto 9 -->
-          <div class="produto">
-            <img src="Pacoco.jpg" alt="Paçoca" />
-            <div class="nome-produto">Paçoca</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 1,00</div>
-          </div>
-
-
-          <!-- Produto 10 -->
-          <div class="produto">
-            <img src="Picole.png" alt="Picolé" />
-            <div class="nome-produto">Picolés</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 4,00</div>
-          </div>
-
-
-          <!-- Produto 11 -->
-          <div class="produto">
-            <img src="Picolé.png" alt="Picolé" />
-            <div class="nome-produto">Picolé</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 4,00</div>
-          </div>
-
-
-          <!-- Produto 12 -->
-          <div class="produto">
-            <img src="Sanduiche.jpg" alt="Sanduíche" />
-            <div class="nome-produto">Sanduíche</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 5,00</div>
-          </div>
-
-
-          <!-- Produto 13 -->
-          <div class="produto">
-            <img src="Snickers.jpg" alt="Barrinha" />
-            <div class="nome-produto">Barrinha</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 3,50</div>
-          </div>
-
-
-          <!-- Produto 14 -->
-          <div class="produto">
-            <img src="Agua coco.png" alt="Água de coco" />
-            <div class="nome-produto">Água de coco</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 4,00</div>
-          </div>
-
-
-          <!-- Produto 15 -->
-          <div class="produto">
-            <img src="Coca-cola.png" alt="Coca-cola" />
-            <div class="nome-produto">Coca-cola</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 3,00</div>
-          </div>
-
-
-          <!-- Produto 16 -->
-          <div class="produto">
-            <img src="Fanta laranja.png" alt="Fanta laranja" />
-            <div class="nome-produto">Fanta laranja</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 3,00</div>
-          </div>
-
-
-          <!-- Produto 17 -->
-          <div class="produto">
-            <img src="Guarana.jpg" alt="Guaraná" />
-            <div class="nome-produto">Guaraná</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 4,50</div>
-          </div>
-
-
-          <!-- Produto 18 -->
-          <div class="produto">
-           <img src="Pepsi.jpg" alt="Pepsi" />
-           <div class="nome-produto">Pepsi</div>
-           <div class="avaliacao">★★★★☆</div>
-           <div class="preco">R$ 3,00</div>
-        </div>
-
-
-
-          <!-- Produto 19 -->
-          <div class="produto">
-            <img src="Trident.png" alt="Trident" />
-            <div class="nome-produto">Trident</div>
-            <div class="avaliacao">★★★★☆</div>
-            <div class="preco">R$ 2,50</div>
-          </div>
-
-
-          <!-- Produto 20 -->
-          <div class="produto">
-            <img src="Mentos.jpg" alt="Mentos" />
-            <div class="nome-produto">Mentos</div>
-            <div class="avaliacao">★★★★★</div>
-            <div class="preco">R$ 2,99</div>
-          </div>
-        </div>
-
-
-        <button class="btn-nav btn-direita" id="btnDir">&#10095;</button>
+      <!-- Produto 3 -->
+      <div class="produto">
+        <img src="Brownie.png" alt="Brownie" />
+        <div class="nome-produto">Brownie</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 6,00</div>
+        <a href="#" class="btn-comprar" data-nome="Brownie" data-preco="6">Comprar</a>
       </div>
+
+      <!-- Produto 4 -->
+      <div class="produto">
+        <img src="Chocolate.png" alt="Chocolate" />
+        <div class="nome-produto">Chocolate</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 5,00</div>
+        <a href="#" class="btn-comprar" data-nome="Chocolate" data-preco="5">Comprar</a>
+      </div>
+
+      <!-- Produto 5 -->
+      <div class="produto">
+        <img src="Enroladinho.jpg" alt="Enroladinho de salsicha" />
+        <div class="nome-produto">Enroladinho de salsicha</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 5,00</div>
+        <a href="#" class="btn-comprar" data-nome="Enroladinho de salsicha" data-preco="5">Comprar</a>
+      </div>
+
+      <!-- Produto 6 -->
+      <div class="produto">
+        <img src="Enroladinho.png" alt="Enroladinho de queijo e presunto" />
+        <div class="nome-produto">Enroladinho de queijo e presunto</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 5,00</div>
+        <a href="#" class="btn-comprar" data-nome="Enroladinho de queijo e presunto" data-preco="5">Comprar</a>
+      </div>
+
+      <!-- Produto 7 -->
+      <div class="produto">
+        <img src="Esfirra.jpg" alt="Esfirra de frango" />
+        <div class="nome-produto">Esfirra de frango</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 5,50</div>
+        <a href="#" class="btn-comprar" data-nome="Esfirra de frango" data-preco="5.50">Comprar</a>
+      </div>
+
+      <!-- Produto 8 -->
+      <div class="produto">
+        <img src="Pastel.jpg" alt="Pastel" />
+        <div class="nome-produto">Pastel</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 4,30</div>
+        <a href="#" class="btn-comprar" data-nome="Pastel" data-preco="4.30">Comprar</a>
+      </div>
+
+      <!-- Produto 9 -->
+      <div class="produto">
+        <img src="Pacoco.jpg" alt="Paçoca" />
+        <div class="nome-produto">Paçoca</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 1,00</div>
+        <a href="#" class="btn-comprar" data-nome="Paçoca" data-preco="1">Comprar</a>
+      </div>
+
+      <!-- Produto 10 -->
+      <div class="produto">
+        <img src="Picole.png" alt="Picolé" />
+        <div class="nome-produto">Picolé</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 4,00</div>
+        <a href="#" class="btn-comprar" data-nome="Picolé" data-preco="4">Comprar</a>
+      </div>
+
+      <!-- Produto 11 -->
+      <div class="produto">
+        <img src="Picolé.png" alt="Picolé" />
+        <div class="nome-produto">Picolé</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 4,00</div>
+        <a href="#" class="btn-comprar" data-nome="Picolé" data-preco="4">Comprar</a>
+      </div>
+
+      <!-- Produto 12 -->
+      <div class="produto">
+        <img src="Sanduiche.jpg" alt="Sanduíche" />
+        <div class="nome-produto">Sanduíche</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 5,00</div>
+        <a href="#" class="btn-comprar" data-nome="Sanduíche" data-preco="5">Comprar</a>
+      </div>
+
+      <!-- Produto 13 -->
+      <div class="produto">
+        <img src="Snickers.jpg" alt="Barrinha" />
+        <div class="nome-produto">Barrinha</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 3,50</div>
+        <a href="#" class="btn-comprar" data-nome="Barrinha" data-preco="3.50">Comprar</a>
+      </div>
+
+      <!-- Produto 14 -->
+      <div class="produto">
+        <img src="Agua coco.png" alt="Água de coco" />
+        <div class="nome-produto">Água de coco</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 4,00</div>
+        <a href="#" class="btn-comprar" data-nome="Água de coco" data-preco="4">Comprar</a>
+      </div>
+
+      <!-- Produto 15 -->
+      <div class="produto">
+        <img src="Coca-cola.png" alt="Coca-cola" />
+        <div class="nome-produto">Coca-cola</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 3,00</div>
+        <a href="#" class="btn-comprar" data-nome="Coca-cola" data-preco="3">Comprar</a>
+      </div>
+
+      <!-- Produto 16 -->
+      <div class="produto">
+        <img src="Fanta laranja.png" alt="Fanta laranja" />
+        <div class="nome-produto">Fanta laranja</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 3,00</div>
+        <a href="#" class="btn-comprar" data-nome="Fanta laranja" data-preco="3">Comprar</a>
+      </div>
+
+      <!-- Produto 17 -->
+      <div class="produto">
+        <img src="Guarana.jpg" alt="Guaraná" />
+        <div class="nome-produto">Guaraná</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 4,50</div>
+        <a href="#" class="btn-comprar" data-nome="Guaraná" data-preco="4.50">Comprar</a>
+      </div>
+
+      <!-- Produto 18 -->
+      <div class="produto">
+        <img src="Pepsi.jpg" alt="Pepsi" />
+        <div class="nome-produto">Pepsi</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 3,00</div>
+        <a href="#" class="btn-comprar" data-nome="Pepsi" data-preco="3">Comprar</a>
+      </div>
+
+      <!-- Produto 19 -->
+      <div class="produto">
+        <img src="Trident.png" alt="Trident" />
+        <div class="nome-produto">Trident</div>
+        <div class="avaliacao">★★★★☆</div>
+        <div class="preco">R$ 2,50</div>
+        <a href="#" class="btn-comprar" data-nome="Trident" data-preco="2.50">Comprar</a>
+      </div>
+
+      <!-- Produto 20 -->
+      <div class="produto">
+        <img src="Mentos.jpg" alt="Mentos" />
+        <div class="nome-produto">Mentos</div>
+        <div class="avaliacao">★★★★★</div>
+        <div class="preco">R$ 2,99</div>
+        <a href="#" class="btn-comprar" data-nome="Mentos" data-preco="2.99">Comprar</a>
+      </div>
+
     </div>
 
+    <button class="btn-nav btn-direita" id="btnDir">&#10095;</button>
+  </div>
+</div>
 
-    <!-- ========== Cardápio (preservado) ========== -->
+
    <!-- ========== CARDÁPIO ========== -->
     <main
       class="container-cardapio"
