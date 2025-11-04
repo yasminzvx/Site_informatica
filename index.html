@@ -671,7 +671,7 @@
         <div class="card-prod"><img src="Coca-cola.png" alt><div class="nome">Coca-cola</div><div class="preco">R$ 3,00</div><button class="btn-buy" data-nome="Coca-cola" data-preco="3">Comprar</button></div>
         <div class="card-prod"><img src="Fanta laranja.png" alt><div class="nome">Fanta Laranja</div><div class="preco">R$ 3,00</div><button class="btn-buy" data-nome="Fanta Laranja" data-preco="3">Comprar</button></div>
         <div class="card-prod"><img src="Guarana.jpg" alt><div class="nome">Guaraná</div><div class="preco">R$ 4,50</div><button class="btn-buy" data-nome="Guaraná" data-preco="4.5">Comprar</button></div>
-        <div class="card-prod"><img src="Agua coco.png" alt><div class="nome">Água de Coco</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Água de coco" data-preco="4">Comprar</button></div>
+        <div class="card-prod"><img src="Agua coco.png" alt><div class="nome">Água de coco</div><div class="preco">R$ 4,00</div><button class="btn-buy" data-nome="Água de coco" data-preco="4">Comprar</button></div>
       </div>
     </div>
 
@@ -1177,7 +1177,7 @@
   <div id="mensagem" aria-live="polite"></div>
 
  <!-- ========== SCRIPTS (integração) ========== -->
-  <script>
+ <script>
     // ---------- Estado do carrinho (integrado, mantém comportamento) ----------
     let carrinho = [];
     const contador = document.getElementById('contador-carrinho');
@@ -1260,45 +1260,79 @@
 
       function mostrar(){ slides.forEach((s,i)=>s.classList.toggle('active', i===idx)); }
       function nextSlide(){ idx = (idx+1)%slides.length; mostrar(); }
-      function prevSlide(){ idx = (idx-1+slides.length)%slides.length;
-         mostrar(); }
+      function prevSlide(){ idx = (idx-1+slides.length)%slides.length; mostrar(); }
 
       prev.addEventListener('click', ()=>{ prevSlide(); resetTimer(); });
       next.addEventListener('click', ()=>{ nextSlide(); resetTimer(); });
 
       function startTimer(){ timer = setInterval(nextSlide,5000); }
-      function resetTimer(){ clearInterval(timer); 
-        startTimer(); }
+      function resetTimer(){ clearInterval(timer); startTimer(); }
 
-      // start auto
       startTimer();
 
-      // expose manual trigger when tab becomes active
       car.addEventListener('carousel-show', ()=>{ idx = 0; mostrar(); resetTimer(); });
     });
 
-    // ---------- Carrossel horizontal grande (preservado comportamento) ----------
+    /* ============================================================
+       🚀 Carrossel horizontal grande (CORRIGIDO + AUTO DESLIZAMENTO)
+       ============================================================ */
     (function(){
       const btnEsq = document.getElementById('btnEsq');
       const btnDir = document.getElementById('btnDir');
       const lista = document.getElementById('listaProdutos');
       if(!btnEsq || !btnDir || !lista) return;
+
       let pos = 0;
-       const largura = 240;
-      function itensVisiveis(){ return Math.floor((document.querySelector('.carrossel').offsetWidth)/220) || 4 }
-      function maxShift(){ return largura * (lista.children.length - itensVisiveis()); }
-      btnDir.addEventListener('click', ()=>{ const max = maxShift();
-         if(pos > -max){ pos -= largura; 
-        lista.style.transform = `translateX(${pos}px)`;
-       } else { pos = 0; 
-        lista.style.transform = `translateX(0)`; } });
-      btnEsq.addEventListener('click', ()=>{ if(pos < 0){ pos += largura; 
-        lista.style.transform = `translateX(${pos}px)`; } });
-      setInterval(()=>{ const max = maxShift(); if(pos > -max){ pos -= largura; lista.style.transform = `translateX(${pos}px)`;
-       } else { pos = 0; 
-        lista.style.transform = `translateX(0)`; } },6000);
-      window.addEventListener('resize', ()=>{ pos = 0; 
-        lista.style.transform = 'translateX(0)'; });
+      let autoSlide;
+
+      function atualizarCarrossel() {
+        const larguraItem = lista.children[0].offsetWidth + 16; // largura + gap
+        const visiveis = Math.floor(lista.parentElement.offsetWidth / larguraItem);
+        const maxPos = lista.children.length - visiveis;
+
+        if (pos < 0) pos = 0;
+        if (pos > maxPos) pos = maxPos;
+
+        lista.style.transform = `translateX(-${pos * larguraItem}px)`;
+      }
+
+      function avancar() {
+        const larguraItem = lista.children[0].offsetWidth + 16;
+        const visiveis = Math.floor(lista.parentElement.offsetWidth / larguraItem);
+        const maxPos = lista.children.length - visiveis;
+        pos++;
+        if (pos > maxPos) pos = 0; // volta ao início ao chegar no fim
+        atualizarCarrossel();
+      }
+
+      function iniciarAutoSlide() {
+        pararAutoSlide();
+        autoSlide = setInterval(avancar, 6000);
+      }
+
+      function pararAutoSlide() {
+        clearInterval(autoSlide);
+      }
+
+      btnDir.addEventListener('click', () => {
+        pos++;
+        atualizarCarrossel();
+        iniciarAutoSlide();
+      });
+
+      btnEsq.addEventListener('click', () => {
+        pos--;
+        atualizarCarrossel();
+        iniciarAutoSlide();
+      });
+
+      window.addEventListener('resize', atualizarCarrossel);
+
+      lista.addEventListener('mouseenter', pararAutoSlide);
+      lista.addEventListener('mouseleave', iniciarAutoSlide);
+
+      atualizarCarrossel();
+      iniciarAutoSlide();
     })();
 
     // ---------- Carrossel de parcerias (preservado) ----------
@@ -1310,18 +1344,14 @@
       const nextBtn = document.getElementById('nextPar');
       let indice = 0; 
       const totalSlides = imagens.length;
-      function limitarIndice(){ if(indice >= totalSlides) indice = 0; 
-        if(indice < 0) indice = totalSlides - 1; }
-      function atualizarSlide(){ limitarIndice();
-       slides.style.transform = `translateX(${-indice * 100}%)`; }
+      function limitarIndice(){ if(indice >= totalSlides) indice = 0; if(indice < 0) indice = totalSlides - 1; }
+      function atualizarSlide(){ limitarIndice(); slides.style.transform = `translateX(${-indice * 100}%)`; }
       nextBtn.addEventListener('click', ()=>{ indice++; atualizarSlide(); }); 
-      prevBtn.addEventListener('click', ()=>{ indice--; 
-        atualizarSlide(); });
-      setInterval(()=>{ indice++; 
-        atualizarSlide(); 
-      },5000);
+      prevBtn.addEventListener('click', ()=>{ indice--; atualizarSlide(); });
+      setInterval(()=>{ indice++; atualizarSlide(); },5000);
     })();
-   
 </script>
 </body>
 </html>
+
+
