@@ -1177,8 +1177,8 @@
   <div id="mensagem" aria-live="polite"></div>
 
  <!-- ========== SCRIPTS (integração) ========== -->
- <script>
-    // ---------- Estado do carrinho (integrado, mantém comportamento) ----------
+<script>
+    // ---------- Estado do carrinho (mantido) ----------
     let carrinho = [];
     const contador = document.getElementById('contador-carrinho');
     const painelCarrinho = document.getElementById('painelCarrinho');
@@ -1200,7 +1200,6 @@
     }
     function mostrarMensagem(texto){ mensagemEl.textContent = texto; mensagemEl.classList.add('mostrar'); setTimeout(()=>mensagemEl.classList.remove('mostrar'),2000) }
 
-    // Adicionar itens (mantém botões .btn-comprar e .btn-buy)
     function adicionarCarrinho(nome, preco){ carrinho.push({nome, preco}); atualizarContador(); atualizarPainel(); mostrarMensagem(nome + ' adicionado ao carrinho!') }
 
     document.addEventListener('click', function(e){
@@ -1211,31 +1210,25 @@
       if(rem){ const idx = Number(rem.dataset.idx); if(!isNaN(idx)){ carrinho.splice(idx,1); atualizarContador(); atualizarPainel(); } return }
     });
 
-     document.getElementById('btnPedirAgora').addEventListener('click', () => {
-     if (carrinho.length === 0) {
-       mostrarMensagem('Seu carrinho está vazio!');
-       return;
-    }
-
-     // Exibe notificação no topo
+    document.getElementById('btnPedirAgora').addEventListener('click', () => {
+      if (carrinho.length === 0) {
+        mostrarMensagem('Seu carrinho está vazio!');
+        return;
+      }
       mostrarMensagem('Compra finalizada! Total: R$ ' + Number(totalCarrinho.textContent).toFixed(2));
-
-     // Limpa carrinho e atualiza painel
-    carrinho = [];
+      carrinho = [];
       atualizarContador();
       atualizarPainel();
-    painelCarrinho.style.display = 'none';
+      painelCarrinho.style.display = 'none';
     });
 
-    // Toggle painel carrinho (preservado)
     document.querySelector('.icons .icon[title="Carrinho"]').addEventListener('click', ()=>{
       painelCarrinho.style.display = painelCarrinho.style.display === 'block' ? 'none' : 'block';
     });
 
-    // ---------- Abas e vinculação ao carrossel (nova integração) ----------
+    // ---------- Abas + Mini Carrossel (mantidos) ----------
     const tabButtons = document.querySelectorAll('nav.main-nav button');
     const tabs = document.querySelectorAll('.tab-content');
-
     tabButtons.forEach(btn=>{
       btn.addEventListener('click', ()=>{
         tabButtons.forEach(b=>b.removeAttribute('aria-current'));
@@ -1244,37 +1237,30 @@
         tabs.forEach(t=>t.classList.remove('active'));
         const activeTab = document.getElementById(tabId);
         if(activeTab) activeTab.classList.add('active');
-        // vincula ao carrossel: reinicia o mini-carrossel da aba
         const mini = activeTab.querySelector('.mini-carousel');
         if(mini){ mini.dispatchEvent(new CustomEvent('carousel-show')) }
         window.scrollTo({top:120,behavior:'smooth'});
       });
     });
 
-    // ---------- Mini carrossel por aba (passagem automática + manual + fade) ----------
     document.querySelectorAll('.mini-carousel').forEach(car=>{
       const slides = Array.from(car.querySelectorAll('.slide'));
       const prev = car.querySelector('.prev');
       const next = car.querySelector('.next');
       let idx = 0; let timer = null;
-
       function mostrar(){ slides.forEach((s,i)=>s.classList.toggle('active', i===idx)); }
       function nextSlide(){ idx = (idx+1)%slides.length; mostrar(); }
       function prevSlide(){ idx = (idx-1+slides.length)%slides.length; mostrar(); }
-
       prev.addEventListener('click', ()=>{ prevSlide(); resetTimer(); });
       next.addEventListener('click', ()=>{ nextSlide(); resetTimer(); });
-
       function startTimer(){ timer = setInterval(nextSlide,5000); }
       function resetTimer(){ clearInterval(timer); startTimer(); }
-
       startTimer();
-
       car.addEventListener('carousel-show', ()=>{ idx = 0; mostrar(); resetTimer(); });
     });
 
     /* ============================================================
-       🚀 Carrossel horizontal grande (CORRIGIDO + AUTO DESLIZAMENTO)
+       🚀 Carrossel horizontal grande (corrigido + auto + fade suave)
        ============================================================ */
     (function(){
       const btnEsq = document.getElementById('btnEsq');
@@ -1284,16 +1270,32 @@
 
       let pos = 0;
       let autoSlide;
+      let isFading = false;
+
+      // Aplica efeito de transição suave
+      lista.style.transition = 'transform 0.7s ease-in-out, opacity 0.6s ease-in-out';
+      lista.style.opacity = '1';
 
       function atualizarCarrossel() {
-        const larguraItem = lista.children[0].offsetWidth + 16; // largura + gap
+        const larguraItem = lista.children[0].offsetWidth + 16;
         const visiveis = Math.floor(lista.parentElement.offsetWidth / larguraItem);
         const maxPos = lista.children.length - visiveis;
 
         if (pos < 0) pos = 0;
         if (pos > maxPos) pos = maxPos;
 
-        lista.style.transform = `translateX(-${pos * larguraItem}px)`;
+        // aplica fade durante a transição
+        if (!isFading) {
+          isFading = true;
+          lista.style.opacity = '0.4';
+          setTimeout(() => {
+            lista.style.transform = `translateX(-${pos * larguraItem}px)`;
+            lista.style.opacity = '1';
+            isFading = false;
+          }, 150);
+        } else {
+          lista.style.transform = `translateX(-${pos * larguraItem}px)`;
+        }
       }
 
       function avancar() {
@@ -1301,7 +1303,7 @@
         const visiveis = Math.floor(lista.parentElement.offsetWidth / larguraItem);
         const maxPos = lista.children.length - visiveis;
         pos++;
-        if (pos > maxPos) pos = 0; // volta ao início ao chegar no fim
+        if (pos > maxPos) pos = 0;
         atualizarCarrossel();
       }
 
@@ -1327,7 +1329,6 @@
       });
 
       window.addEventListener('resize', atualizarCarrossel);
-
       lista.addEventListener('mouseenter', pararAutoSlide);
       lista.addEventListener('mouseleave', iniciarAutoSlide);
 
@@ -1335,7 +1336,7 @@
       iniciarAutoSlide();
     })();
 
-    // ---------- Carrossel de parcerias (preservado) ----------
+    // ---------- Carrossel de parcerias (mantido) ----------
     (function(){
       const slides = document.getElementById('slidesParcerias');
       if(!slides) return;
@@ -1353,5 +1354,3 @@
 </script>
 </body>
 </html>
-
-
